@@ -13,22 +13,9 @@ NWL_WeisfeilerLehman::NWL_WeisfeilerLehman(string graph_database_name, int par_t
       color_counters.reserve(num_graphs);
       //cout << num_graphs << endl;
 
-      LoadIsomorphicTypes(); //int i = 0;
-      for (auto &graph: gdb) {
-	/*bool flag = true; size_t num_nodes = graph.get_num_nodes();
-	for (int i = 0; i < num_nodes; i++) {
-          vector<int> neighborhood_subgraph = bfs(i, graph);
-
-          int N = neighborhood_subgraph.size();
-
-          if(t > N)
-            flag = false;
-
-        }
-	if(flag)*/
-	//cout << "Graph .............." << i << endl; i++;
+      LoadIsomorphicTypes();
+      for (auto &graph: gdb)
         color_counters.push_back(NeighborhoodWL(graph));
-      }
 
       int sum = 0;
       unordered_map<string, vector<ulong> > iso_test;
@@ -43,7 +30,6 @@ NWL_WeisfeilerLehman::NWL_WeisfeilerLehman(string graph_database_name, int par_t
           hash_key += to_string(key) + string("-") + to_string(value) + " ";
         }
 
-        //cout << hash_key << endl;
         hash_key.pop_back();
         iso_test[hash_key].push_back(i);
       }
@@ -53,23 +39,8 @@ NWL_WeisfeilerLehman::NWL_WeisfeilerLehman(string graph_database_name, int par_t
         string key = it->first;
         vector<ulong> value = it->second;
 
-        if(value.size() > 1) {
+        if(value.size() > 1)
           sum += (value.size() * (value.size() - 1)) / 2;
-          /*for(int i : value) {
-            cout << gdb[i].get_num_nodes() << " " << gdb[i].get_num_edges() << endl;
-
-            for(int j = 0; j < gdb[i].get_num_nodes(); j++) {
-              vector<int> neighbors = gdb[i].get_neighbours(j);
-              for(int w : neighbors) {
-                if(w > j)
-                  cout << j << " " << w << "  ";
-              }
-            }
-            cout << endl;
-          }
-	  cout << endl;*/
-	}
-
         it++;
       }
       cout << "Isomorphic Pairs = " << sum << endl;
@@ -94,33 +65,6 @@ vector<pair<int, int> > NWL_WeisfeilerLehman::bfs_pair(int i, const Graph &g) {
       if (P[w] == 99 && P[u] < d) {
         P[w] = P[u] + 1;
         neighborhood_subgraph.push_back(make_pair(w, P[w]));
-        que.push(w);
-      }
-    }
-  }
-
-  return neighborhood_subgraph;
-}
-
-vector<int> NWL_WeisfeilerLehman::bfs(int i, const Graph &g) {
-
-  size_t num_nodes = g.get_num_nodes();
-  vector<int> neighborhood_subgraph;
-  neighborhood_subgraph.push_back(i);
-
-  queue<int> que;
-  vector<int> P; P.resize(num_nodes, 99);
-
-  que.push(i); P[i] = 0;
-  while (!que.empty()) {
-    int u = que.front();
-    que.pop();
-
-    vector<int> neighbors = g.get_neighbours(u);
-    for (int w : neighbors) {
-      if (P[w] == 99 && P[u] < d) {
-        P[w] = P[u] + 1;
-        neighborhood_subgraph.push_back(w);
         que.push(w);
       }
     }
@@ -186,13 +130,10 @@ map<ulong, int> NWL_WeisfeilerLehman::NeighborhoodWL(const Graph &g) {
       map<string, ulong> colors;
       if(temp_t == 1) {
 	
-
 	for (int v0 = 0; v0 < N; v0++) {
           vector<int> v; v.push_back(neighborhood_subgraph[v0].second); v.push_back(coloring[neighborhood_subgraph[v0].first]);
           colors["0"+to_string(neighborhood_subgraph[v0].second)] += pairing(v[0], v[1]);
 	}
-
-        
 
       } else if(temp_t == 2) {
 	
