@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <queue>
 #include <set>
 
@@ -20,7 +19,6 @@ class NWL_WeisfeilerLehman {
     // Compute lables for each graph in graph database.
     map<ulong, int> NeighborhoodWL(const Graph &g);
     void LoadIsomorphicTypes();
-    vector<int> bfs(int i, const Graph &g);
     vector<pair<int, int> > bfs_pair(int i, const Graph &g);
 
     // Reading a graph database from txt file.
